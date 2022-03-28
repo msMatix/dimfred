@@ -1,0 +1,17 @@
+shell: sh
+
+commands:
+  build:
+    description: builds a distribution
+    cmd: |
+      poetry build
+
+  test:
+    description: run the tests
+    cmd: |
+      python3 -m pytest -s -p no:pytest-brownie
+
+  env:
+    description: enable venv
+    cmd: |
+      poetry shell
