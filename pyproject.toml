@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dimfred"
-version = "0.1.0"
+version = "0.2.0"
 description = "Tools and abbrevations I use often."
 authors = ["Dmitrij Vinokour <dimfred.1337@web.de>"]
 license = "MIT"
