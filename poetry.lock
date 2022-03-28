@@ -56,8 +56,8 @@ widechars = ["wcwidth"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.7 ^3.8 ^3.9 ^3.10"
-content-hash = "47bc030b76ca8ecb666c1a6f979660f74d11acfe8bbec65fd94c315f4624c2ec"
+python-versions = ">= 3.7"
+content-hash = "535eee6028e3dc037e361a3aa74c0d5d86dc8c70125663b164673189b8deb9c5"
 
 [metadata.files]
 easydict = [

@@ -1,11 +1,6 @@
 shell: sh
 
 commands:
-  build:
-    description: builds a distribution
-    cmd: |
-      poetry build
-
   test:
     description: run the tests
     cmd: |
