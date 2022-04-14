@@ -12,15 +12,15 @@ def parse(f):
 
 
 @parse
-def fpipe(cmd):
-    p = sp.Popen(cmd, stdout=sp.DEVNULL, stdin=sp.DEVNULL)
+def fpipe(cmd, cwd=None):
+    p = sp.Popen(cmd, stdout=sp.DEVNULL, stdin=sp.DEVNULL, cwd=cwd)
 
     return p
 
 
 @parse
-def pipe(cmd, n_lines=0, return_idx=0):
-    p = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
+def pipe(cmd, n_lines=0, return_idx=0, cwd=cwd):
+    p = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, cwd=cwd)
     if n_lines:
         lines = [p.stdout.readline() for _ in range(n_lines)]
         p.terminate()
