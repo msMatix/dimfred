@@ -19,7 +19,7 @@ def fpipe(cmd, cwd=None):
 
 
 @parse
-def pipe(cmd, n_lines=0, return_idx=0, cwd=cwd):
+def pipe(cmd, n_lines=0, return_idx=0, cwd=None):
     p = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, cwd=cwd)
     if n_lines:
         lines = [p.stdout.readline() for _ in range(n_lines)]
