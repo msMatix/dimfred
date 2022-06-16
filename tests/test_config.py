@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pytest
 
@@ -15,4 +16,4 @@ def test_okay_config():
     assert c.n1.n2 == "1 2"
     assert c.n1.n3[0] == "1"
     assert c.n1.n3[1] == "2"
-
+    assert isinstance(c.n4, Path)
