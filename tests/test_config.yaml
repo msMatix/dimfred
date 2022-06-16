@@ -6,4 +6,6 @@ n1:
     - "${a}"
     - "${b}"
 n4: "P{data/test}"
+n5: "${MUST:!}"
+n6: "${c:default}"
 

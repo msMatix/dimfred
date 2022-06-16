@@ -23,7 +23,18 @@ def _replace_env_vars(s):
     matches = re.findall(r, s)
 
     for match in matches:
-        s = s.replace(f"${{{match}}}", os.environ.get(match, ""))
+        splitted = match.split(":")
+        # no extension just try with default empty
+        if len(match) == 1:
+            operator = lambda: os.environ.get(splitted[0], "")
+        # env var has to be set
+        elif splitted[1] == "!":
+            operator = lambda: os.environ[splitted[0]]
+        # default value
+        else:
+            operator = lambda: os.environ.get(splitted[0], splitted[1])
+
+        s = s.replace(f"${{{match}}}", operator())
 
     return s
 
