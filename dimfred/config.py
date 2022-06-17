@@ -26,7 +26,7 @@ def _replace_env_vars(s):
     for match in matches:
         splitted = match.split(":")
         # no extension just try with default empty
-        if len(match) == 1:
+        if len(splitted) == 1:
             operator = lambda: os.environ.get(splitted[0], "")
         # env var has to be set
         elif splitted[1] == "!":
