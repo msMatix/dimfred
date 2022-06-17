@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from pathlib import Path
@@ -48,6 +49,16 @@ def _replace_path_vars(s):
     return s
 
 
+def _replace_abi_vars(s):
+    r = "ABI{([^}]*)}"
+    matches = re.findall(r, s)
+    for match in matches:
+        with open(match, "r") as f:
+            s = json.load(f)["abi"]
+
+    return s
+
+
 class BaseConfig:
     def __init__(self, path: Union[str, Path], config: dict = {}):
         if path:
@@ -71,8 +82,8 @@ class BaseConfig:
                 config = load(f)
 
             config = edict(config)
-            config = _load_vars(config, _replace_env_vars)
-            config = _load_vars(config, _replace_path_vars)
+            for repl in (_replace_env_vars, _replace_path_vars, _replace_abi_vars):
+                config = _load_vars(config, repl)
 
         for k, v in config.items():
             setattr(self, k, v)

@@ -19,11 +19,13 @@ def test_okay_config():
     assert c.n1.n3[1] == "2"
     assert isinstance(c.n4, Path)
     assert c.n6 == "default"
+    assert c.n7[0]["stateMutability"] == "nonpayable"
 
 def test_fail_if_not_set():
     del os.environ["MUST"]
 
     with pytest.raises(Exception):
         c = BaseConfig("tests/test_config.yaml")
+
 
 

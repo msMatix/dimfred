@@ -8,4 +8,4 @@ n1:
 n4: "P{data/test}"
 n5: "${MUST:!}"
 n6: "${c:default}"
-
+n7: "ABI{tests/test_config_abi.json}"
