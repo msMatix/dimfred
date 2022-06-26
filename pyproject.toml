@@ -6,10 +6,9 @@ authors = ["Dmitrij Vinokour <dimfred.1337@web.de>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "3.*"
+python = ">=3.6.1,<4.0.0"
 tabulate = "^0.8.9"
 easydict = "^1.9"
-jsoncomment = "^0.4.2"
 PyYAML = "^6.0"
 pluck = "^0.2"
 urlpath = "^1.2.0"
@@ -17,6 +16,8 @@ prettyprint = "^0.1.5"
 psutil = "^5.9.0"
 click = "<8.1.0"
 shutils = "^0.1.0"
+pydantic = "^1.9.1"
+jsoncomment = "^0.4.2"
 
 [tool.poetry.dev-dependencies]
 pytest-asyncio = "^0.18.3"
