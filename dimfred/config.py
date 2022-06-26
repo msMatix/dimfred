@@ -1,89 +1,55 @@
 import json
 import os
-import re
-from pathlib import Path
 from typing import Union
 
-from easydict import EasyDict as edict
+from pydantic import BaseSettings, root_validator
 
 
-def _load_vars(config, replace_vars):
-    for k, v in config.items():
-        if isinstance(v, str):
-            config[k] = replace_vars(v)
-        elif isinstance(v, (dict, edict)):
-            config[k] = _load_vars(v, replace_vars)
-        elif isinstance(v, list):
-            config[k] = [replace_vars(v_) if isinstance(v_, str) else v_ for v_ in v]
-
-    return config
-
-
-def _replace_env_vars(s):
-    r = "\\${([^}]*)}"
-    matches = re.findall(r, s)
-
-    for match in matches:
-        splitted = match.split(":")
-        # no extension just try with default empty
-        if len(splitted) == 1:
-            operator = lambda: os.environ.get(splitted[0], "")
-        # env var has to be set
-        elif splitted[1] == "!":
-            operator = lambda: os.environ[splitted[0]]
-        # default value
+################################################################################
+# HELPER
+################################################################################
+class ABI_(list):
+    def __init__(self, path_or_list: Union[list, str]):
+        if isinstance(path_or_list, str):
+            self.path = path_or_list
+            self.load()
         else:
-            operator = lambda: os.environ.get(splitted[0], splitted[1])
+            self.path = ""
+            self._load_list(path_or_list)
 
-        s = s.replace(f"${{{match}}}", operator())
+    def load(self):
+        self.clear()
 
-    return s
+        with open(self.path, "r") as f:
+            j = json.load(f)
 
+        for v in j["abi"]:
+            self.append(v)
 
-def _replace_path_vars(s):
-    r = "P{([^}]*)}"
-    matches = re.findall(r, s)
-    for match in matches:
-        s = Path(match)
-
-    return s
-
-
-def _replace_abi_vars(s):
-    r = "ABI{([^}]*)}"
-    matches = re.findall(r, s)
-    for match in matches:
-        with open(match, "r") as f:
-            s = json.load(f)["abi"]
-
-    return s
+    def _load_list(self, l):
+        self.clear()
+        for i in l:
+            self.append(i)
 
 
-class BaseConfig:
-    def __init__(self, path: Union[str, Path], config: dict = {}):
-        if path:
-            path = str(path)
-            if path.endswith("yaml"):
-                import yaml
+################################################################################
+# TYPES
+################################################################################
+ABI = Union[ABI_, str]
 
-                load = yaml.safe_load
-            elif path.endswith("json"):
-                import json
 
-                load = json.load
-            elif path.endswith("jsonc"):
-                from jsoncomment import JsonC
+################################################################################
+# CONFIG
+################################################################################
+class BaseConfig(BaseSettings):
+    class Config:
+        env_file = f"config_{os.environ['APP_CONFIG']}.env"
+        env_file_encoding = "utf-8"
 
-                load = JsonC().load
-            else:
-                raise Exception(f"Unknown filetype: {path}")
+    @root_validator
+    def parse_abis(cls, values):
+        for k, v in values.items():
+            if "_abi" in k or "_ABI" in k:
+                values[k] = ABI_(v)
 
-            with open(path, "r") as f:
-                config = load(f)
-
-            config = edict(config)
-            for repl in (_replace_env_vars, _replace_path_vars, _replace_abi_vars):
-                config = _load_vars(config, repl)
-
-        for k, v in config.items():
-            setattr(self, k, v)
+        return values
