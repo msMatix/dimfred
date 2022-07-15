@@ -13,3 +13,4 @@ from .pipe import fpipe, pipe
 from .psutil_ext import *
 from .stopwatch import Stopwatch
 from .worker import Queue, Worker
+from .queue import RQueue
