@@ -25,13 +25,11 @@ class Depends:
 
 
 def inject(f):
-    fspec = inspect.getargspec(f)
-    count = len(fspec.args) - len(fspec.defaults)
-    defaults = dict(zip(fspec.args[count:], fspec.defaults))
+    fsig = inspect.signature(f)
     dependencies = [
-        (var_name, var_value)
-        for var_name, var_value in defaults.items()
-        if isinstance(var_value, Depends)
+        (var_name, var_value.default)
+        for var_name, var_value in fsig.parameters.items()
+        if isinstance(var_value.default, Depends)
     ]
 
     @wraps(f)
