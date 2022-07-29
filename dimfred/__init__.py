@@ -8,9 +8,10 @@ from pluck import pluck
 from tabulate import tabulate
 
 from . import fastapi_utils
+from .dependency import Depends, inject
 from .loop import loop
 from .pipe import fpipe, pipe
 from .psutil_ext import *
+from .rqueue import RQueue
 from .stopwatch import Stopwatch
 from .worker import Queue, Worker
-from .rqueue import RQueue
