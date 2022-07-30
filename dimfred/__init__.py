@@ -8,7 +8,7 @@ from pluck import pluck
 from tabulate import tabulate
 
 from . import fastapi_utils
-from .dependency import Depends, inject
+from .inject import Depends, inject
 from .loop import loop
 from .pipe import fpipe, pipe
 from .psutil_ext import *
