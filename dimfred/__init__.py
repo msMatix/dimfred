@@ -10,6 +10,7 @@ from tabulate import tabulate
 
 from . import fastapi_utils
 from .async_filelock import AsyncFileLock
+from .celery import acelery_once, celery_once
 from .inject import Depends, inject
 from .loop import loop
 from .pipe import fpipe, pipe
