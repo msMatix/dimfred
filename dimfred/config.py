@@ -47,7 +47,7 @@ class BaseConfig(BaseSettings):
         env_file = f"config_{os.environ['APP_CONFIG']}.env"
         env_file_encoding = "utf-8"
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def parse_abis(cls, values):
         for k, v in values.items():
             if "_abi" in k or "_ABI" in k:
