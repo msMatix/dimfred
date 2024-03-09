@@ -2,7 +2,8 @@ import json
 import os
 from typing import Union
 
-from pydantic import BaseSettings, root_validator
+from pydantic import root_validator
+from pydantic_settings import BaseSettings
 
 
 ################################################################################
