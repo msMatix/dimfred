@@ -3,7 +3,7 @@ import os
 from typing import Union
 
 from pydantic import model_validator
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 ################################################################################
@@ -43,9 +43,9 @@ ABI = Union[ABI_, str]
 # CONFIG
 ################################################################################
 class BaseConfig(BaseSettings):
-    class Config:
-        env_file = f"config_{os.environ['APP_CONFIG']}.env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_file=f"config_{os.environ['APP_CONFIG']}.env", env_file_encoding="utf-8"
+    )
 
     @model_validator(mode="before")
     def parse_abis(cls, values):
