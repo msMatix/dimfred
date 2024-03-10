@@ -2,7 +2,8 @@ import json
 import os
 from typing import Union
 
-from pydantic import BaseSettings, root_validator
+from pydantic import model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 ################################################################################
@@ -42,11 +43,11 @@ ABI = Union[ABI_, str]
 # CONFIG
 ################################################################################
 class BaseConfig(BaseSettings):
-    class Config:
-        env_file = f"config_{os.environ['APP_CONFIG']}.env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_file=f"config_{os.environ['APP_CONFIG']}.env", env_file_encoding="utf-8"
+    )
 
-    @root_validator
+    @model_validator(mode="before")
     def parse_abis(cls, values):
         for k, v in values.items():
             if "_abi" in k or "_ABI" in k:
